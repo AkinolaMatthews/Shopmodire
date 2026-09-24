@@ -1,0 +1,80 @@
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 48px;
+  align-items: start;
+}
+
+.checkout-form h1 { font-size: clamp(1.9rem, 3.4vw, 2.4rem); margin-bottom: 28px; }
+
+.checkout-subheading {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--burgundy);
+  margin: 22px 0 12px;
+}
+
+.checkout-form input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  background: var(--white);
+  margin-bottom: 12px;
+}
+.checkout-form input:focus { border-color: var(--burgundy); outline: none; }
+
+.checkout-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.checkout-row--three { grid-template-columns: 1fr 1fr 1fr; }
+
+.checkout-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 17px 30px;
+  font-size: 1rem;
+}
+
+.checkout-summary {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  position: sticky;
+  top: 110px;
+}
+.checkout-summary h3 { margin-bottom: 18px; }
+
+.checkout-summary__items { display: flex; flex-direction: column; gap: 14px; }
+.checkout-summary__item {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.85rem;
+}
+.checkout-summary__item img {
+  width: 48px; height: 48px; object-fit: cover;
+  border-radius: var(--radius-sm); background: var(--gold-soft);
+}
+.checkout-summary__name { color: var(--charcoal); font-weight: 600; margin-bottom: 2px; }
+.checkout-summary__meta { color: var(--gray); font-size: 0.78rem; }
+
+.checkout-summary__divider { height: 1px; background: var(--border); margin: 16px 0; }
+.checkout-summary__row {
+  display: flex; justify-content: space-between;
+  font-size: 0.92rem; color: var(--gray); margin-bottom: 10px;
+}
+.checkout-summary__total { color: var(--charcoal); font-weight: 700; font-size: 1.05rem; }
+
+.checkout-empty { text-align: center; padding: 60px 0; }
+.checkout-empty h1 { margin-bottom: 10px; }
+.checkout-empty p { margin-bottom: 20px; }
+
+@media (max-width: 860px) {
+  .checkout-grid { grid-template-columns: 1fr; }
+  .checkout-summary { position: static; }
+  .checkout-row--three { grid-template-columns: 1fr; }
+}
