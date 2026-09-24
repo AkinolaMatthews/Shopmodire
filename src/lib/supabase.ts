@@ -1,6 +1,5 @@
 // The dependency is provided by the application's package setup; keep the
 // import type-checkable when the editor has not yet refreshed node_modules.
-// @ts-expect-error Module resolution may be unavailable until dependencies are installed.
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
