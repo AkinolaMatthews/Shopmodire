@@ -38,6 +38,52 @@
   border-radius: var(--radius-pill);
 }
 
+.product-card__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--charcoal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  z-index: 2;
+}
+.product-card__image-wrap:hover .product-card__arrow { opacity: 1; }
+.product-card__arrow:hover { background: var(--white); transform: translateY(-50%) scale(1.06); }
+.product-card__arrow--prev { left: 10px; }
+.product-card__arrow--next { right: 10px; }
+
+.product-card__dots {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  z-index: 2;
+}
+.product-card__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.65);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.product-card__dot--active { background: var(--white); transform: scale(1.35); }
+
+/* Touch devices can't hover -- keep arrows visible but subdued */
+@media (hover: none) {
+  .product-card__arrow { opacity: 0.85; }
+}
+
 .product-card__body { padding: 18px 18px 22px; }
 
 .product-card__category {

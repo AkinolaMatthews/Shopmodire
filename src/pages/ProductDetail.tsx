@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { Minus, Plus, ShoppingBag, Check } from 'lucide-react'
-import { useProduct } from '../hooks/useProducts'
+import { useProduct, useProducts } from '../hooks/useProducts'
 import { useCart } from '../context/CartContext'
+import ProductCard from '../components/ProductCard'
 import './ProductDetail.css'
 
 export default function ProductDetail() {
   const { id } = useParams()
   const { product, loading, error } = useProduct(id)
+  const { products: allProducts } = useProducts()
   const { addItem } = useCart()
 
   const [color, setColor] = useState('')
@@ -26,6 +28,10 @@ export default function ProductDetail() {
 
   if (loading) return <section className="section product-detail"><div className="container">Loading…</div></section>
   if (error || !product) return <Navigate to="/shop" replace />
+
+  const similarProducts = allProducts
+    .filter(p => p.category === product.category && p.id !== product.id)
+    .slice(0, 4)
 
   const handleAdd = () => {
     addItem(product, color, size, qty)
@@ -120,6 +126,15 @@ export default function ProductDetail() {
             </div>
           </div>
         </div>
+
+        {similarProducts.length > 0 && (
+          <div className="pd-similar">
+            <h2 className="pd-similar__title">Similar Products</h2>
+            <div className="product-grid">
+              {similarProducts.map(p => <ProductCard key={p.id} product={p} />)}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )

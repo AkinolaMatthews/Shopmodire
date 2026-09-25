@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ChevronDown } from 'lucide-react'
+import BackgroundBlobs from '../components/BackgroundBlobs'
 import './FAQ.css'
 
 interface FAQItem {
@@ -6,123 +9,84 @@ interface FAQItem {
   answer: string
 }
 
-const faqItems: FAQItem[] = [
+const FAQ_ITEMS: FAQItem[] = [
   {
-    question: 'What products does Shop Modire offer?',
+    question: 'What sizes do you carry?',
     answer:
-      'Shop Modire offers African-inspired medical scrubs, scrub pants, handmade scrub caps, and jogger pants. Each piece combines professional comfort with colorful African-inspired details.',
+      'Most scrubs and joggers run from XS to XXL. Scrub caps are one size and tie-adjustable. Exact sizes available vary by product — check the size options on each product page.',
   },
   {
-    question: 'What are the scrubs made from?',
+    question: 'What is your fabric made of?',
     answer:
-      'Our scrub fabric is made from 72% polyester, 21% rayon, and 7% spandex at 200 GSM. The fabric is soft, durable, flexible, and designed to provide comfort throughout a full work shift.',
-  },
-  {
-    question: 'How do I choose the right size?',
-    answer:
-      'Please check our size information before placing your order. If you are between sizes or need help choosing the right fit, contact us and we will be happy to assist you.',
-  },
-  {
-    question: 'Are the scrub caps handmade?',
-    answer:
-      'Yes. Our scrub caps are handmade with care, tie by tie. They also feature an inner sweatband designed to improve comfort and help keep you comfortable throughout the day.',
+      'Our scrubs and joggers use a 72% polyester, 21% rayon, 7% spandex blend at 200 GSM — soft, durable and stretchy enough to move with you through a full shift.',
   },
   {
     question: 'How long does shipping take?',
     answer:
-      'Shipping times depend on your location and the delivery option selected at checkout. You will receive the available shipping information when placing your order.',
+      'Orders typically ship within 2–3 business days and arrive within 5–10 business days depending on your location. You\'ll get a confirmation email once your order is on its way.',
   },
   {
-    question: 'Can I return or exchange an item?',
+    question: 'What is your return policy?',
     answer:
-      'Yes, eligible items may be returned or exchanged according to our return policy. Please make sure the item meets the return requirements before sending it back.',
+      'Unworn items in original condition can be returned within 14 days of delivery. Scrub caps are handmade to order and are final sale. Reach out to us to start a return.',
   },
   {
-    question: 'Can I place a custom or bulk order?',
+    question: 'Are the scrub caps really handmade?',
     answer:
-      'Yes. We welcome bulk and special orders where available. If you are ordering for a medical team, organization, event, or group, please contact us with your requirements.',
+      'Yes — every scrub cap is handmade from 100% cotton with an inner sweatband, tied by tie, in small batches. That\'s part of why they\'re final sale.',
   },
   {
-    question: 'How can I contact Shop Modire?',
+    question: 'Do you offer wholesale or bulk orders?',
     answer:
-      'You can reach us through our Contact page. Send us your name, email address, and message, and our team will get back to you as soon as possible.',
+      'We do. Reach out through the Contact page or email us directly with the quantities and styles you\'re interested in, and we\'ll follow up with pricing.',
+  },
+  {
+    question: 'How do I care for my Shop Modire pieces?',
+    answer:
+      'Machine wash cold with like colors and tumble dry low. Avoid bleach and high heat to keep the prints vibrant and the stretch fabric intact.',
+  },
+  {
+    question: 'How can I contact you?',
+    answer:
+      'Email shopmodire@gmail.com or call +512-887-2404. You can also reach us through the Contact page.',
   },
 ]
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
 
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index)
-  }
+  const toggle = (i: number) => setOpenIndex(prev => (prev === i ? null : i))
 
   return (
-    <main className="faq-page">
+    <>
+      <section className="section faq-page">
+      <BackgroundBlobs />
+      <div className="container faq-page__inner">
+        <span className="eyebrow">Got questions?</span>
+        <h1>Frequently Asked Questions</h1>
+        <p className="faq-page__sub">
+          Everything you need to know about sizing, fabric, shipping and returns.
+          Can't find your answer? <Link to="/contact">Get in touch</Link>.
+        </p>
 
-      {/* HERO */}
-      <section className="faq-hero">
-        <div className="container faq-hero__inner">
-          <span className="faq-eyebrow">Need to know?</span>
-
-          <h1>Frequently Asked Questions</h1>
-
-          <p>
-            Everything you need to know about our products, sizing, shipping,
-            returns, and ordering from Shop Modire.
-          </p>
+        <div className="faq-list">
+          {FAQ_ITEMS.map((item, i) => (
+            <div className={`faq-item${openIndex === i ? ' faq-item--open' : ''}`} key={item.question}>
+              <button
+                className="faq-item__question"
+                onClick={() => toggle(i)}
+                aria-expanded={openIndex === i}
+              >
+                <span>{item.question}</span>
+                <ChevronDown size={18} className="faq-item__chevron" />
+              </button>
+              {openIndex === i && (
+                <p className="faq-item__answer">{item.answer}</p>
+              )}
+            </div>
+          ))}
         </div>
-      </section>
-
-      {/* FAQ LIST */}
-      <section className="faq-section">
-        <div className="container faq-container">
-
-          <div className="faq-intro">
-            <span>SHOP MODIRE</span>
-
-            <h2>How can we help?</h2>
-
-            <p>
-              We know you may have a few questions before placing your order.
-              Here are some of the things our customers ask us most often.
-            </p>
-          </div>
-
-          <div className="faq-list">
-            {faqItems.map((item, index) => {
-              const isOpen = openIndex === index
-
-              return (
-                <div
-                  className={`faq-item ${isOpen ? 'is-open' : ''}`}
-                  key={item.question}
-                >
-                  <button
-                    type="button"
-                    className="faq-question"
-                    onClick={() => toggleFAQ(index)}
-                    aria-expanded={isOpen}
-                  >
-                    <span>{item.question}</span>
-
-                    <span className="faq-icon">
-                      {isOpen ? '−' : '+'}
-                    </span>
-                  </button>
-
-                  <div
-                    className={`faq-answer ${
-                      isOpen ? 'faq-answer--open' : ''
-                    }`}
-                  >
-                    <p>{item.answer}</p>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-        </div>
+      </div>
       </section>
 
       {/* CONTACT CTA */}
@@ -150,6 +114,6 @@ export default function FAQ() {
         </div>
       </section>
 
-    </main>
+    </>
   )
 }

@@ -32,8 +32,16 @@ export default function Home() {
           </div>
 
           <div className="hero__visual">
-            <div className="hero__image-frame">
-              <img src="/images/hero-model.jpg" alt="Shop Modire scrub top styled on a model" />
+            <div className="hero__video-frame">
+              <video
+                className="hero__video"
+                src="/videos/hero-loop.mp4"
+                poster="/images/hero-model.jpg"
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
             </div>
             <FloatingCartIcon />
           </div>

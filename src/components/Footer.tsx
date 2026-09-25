@@ -22,7 +22,7 @@ export default function Footer() {
           <h4>Company</h4>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
-          <Link to="/contact">FAQ</Link>
+          <Link to="/faq">FAQ</Link>
         </div>
 
         <div className="footer-col">
@@ -35,7 +35,7 @@ export default function Footer() {
         <div className="footer-col">
           <h4>Follow</h4>
           <a href="#" target="_blank" rel="noreferrer"><Instagram size={16} /> Instagram</a>
-          <a href="https://www.etsy.com" target="_blank" rel="noreferrer"><ExternalLink size={16} /> Etsy</a>
+          <a href="https://www.etsy.com/shop/ShopModire" target="_blank" rel="noreferrer"><ExternalLink size={16} /> Etsy</a>
         </div>
       </div>
       <div className="container footer-bottom">

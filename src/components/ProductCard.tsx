@@ -1,14 +1,60 @@
+import { useState, MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Product } from '../types/product'
 import './ProductCard.css'
 
 export default function ProductCard({ product }: { product: Product }) {
+  const images = [product.image_url, ...product.gallery_urls].filter(Boolean)
+  const [index, setIndex] = useState(0)
+  const hasMultiple = images.length > 1
+
+  const goPrev = (e: MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIndex(i => (i - 1 + images.length) % images.length)
+  }
+
+  const goNext = (e: MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIndex(i => (i + 1) % images.length)
+  }
+
   return (
     <Link to={`/product/${product.id}`} className="product-card">
       <div className="product-card__image-wrap">
-        <img src={product.image_url} alt={product.name} loading="lazy" />
+        <img src={images[index]} alt={product.name} loading="lazy" />
         {product.is_new && <span className="product-card__badge">New</span>}
+
+        {hasMultiple && (
+          <>
+            <button
+              type="button"
+              className="product-card__arrow product-card__arrow--prev"
+              onClick={goPrev}
+              aria-label="Previous image"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button
+              type="button"
+              className="product-card__arrow product-card__arrow--next"
+              onClick={goNext}
+              aria-label="Next image"
+            >
+              <ChevronRight size={16} />
+            </button>
+            <div className="product-card__dots">
+              {images.map((_, i) => (
+                <span
+                  key={i}
+                  className={`product-card__dot${i === index ? ' product-card__dot--active' : ''}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
       <div className="product-card__body">
         <span className="product-card__category">{product.category}</span>

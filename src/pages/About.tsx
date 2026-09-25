@@ -7,15 +7,20 @@ export default function About() {
     <>
       <section className="section about-hero">
         <BackgroundBlobs />
-        <div className="container about-hero__inner">
-          <span className="eyebrow">Our story</span>
-          <h1>Where Culture Meets Professionalism</h1>
-          <p>
-            Shop Modire started with a simple observation: medical uniforms rarely reflected
-            the people wearing them. We design scrubs, caps and joggers that carry African
-            heritage prints into hospitals and clinics — proof that professional workwear
-            doesn't have to erase identity.
-          </p>
+        <div className="container about-hero__grid">
+          <div className="about-hero__copy">
+            <span className="eyebrow">Our story</span>
+            <h1>Where Culture Meets Professionalism</h1>
+            <p>
+              Shop Modire started with a simple observation: medical uniforms rarely reflected
+              the people wearing them. We design scrubs, caps and joggers that carry African
+              heritage prints into hospitals and clinics — proof that professional workwear
+              doesn't have to erase identity.
+            </p>
+          </div>
+          <div className="about-hero__image">
+            <img src="/images/about-brand.jpg" alt="Shop Modire brand" />
+          </div>
         </div>
       </section>
 

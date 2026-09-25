@@ -9,6 +9,7 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import FAQ from './pages/FAQ'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminProductNew from './pages/admin/AdminProductNew'
@@ -45,6 +46,7 @@ export default function App() {
         <Route path="/checkout" element={<StorefrontLayout><Checkout /></StorefrontLayout>} />
         <Route path="/about" element={<StorefrontLayout><About /></StorefrontLayout>} />
         <Route path="/contact" element={<StorefrontLayout><Contact /></StorefrontLayout>} />
+        <Route path="/faq" element={<StorefrontLayout><FAQ /></StorefrontLayout>} />
 
         {/* Admin (no storefront header/footer) */}
         <Route path="/admin/login" element={<AdminLogin />} />
