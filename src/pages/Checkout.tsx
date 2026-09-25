@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart, lineKey } from '../context/CartContext'
+import { supabase } from '../lib/supabase'
 import './Checkout.css'
 
 interface FormState {
@@ -35,6 +36,25 @@ export default function Checkout() {
     e.preventDefault()
     setSubmitting(true)
     try {
+      // Record the order first so it always shows up in Admin -> Sales,
+      // even if the Stripe backend below isn't wired up yet.
+      const { error: orderError } = await supabase.from('orders').insert({
+        customer_first_name: form.firstName,
+        customer_last_name: form.lastName,
+        email: form.email,
+        phone: form.phone,
+        address: form.address,
+        city: form.city,
+        state: form.state,
+        country: form.country,
+        items,
+        subtotal,
+        shipping,
+        total,
+        status: 'pending',
+      })
+      if (orderError) console.error('Failed to record order:', orderError.message)
+
       // Stripe requires a server: this calls YOUR backend, which creates a
       // Checkout Session with the Stripe secret key and returns its URL.
       // See the README for a minimal server example.
@@ -52,8 +72,9 @@ export default function Checkout() {
       throw new Error('no redirect url returned')
     } catch (err) {
       console.error(err)
-      // Fallback while the backend isn't wired up yet, so the flow is still demoable.
-      alert('Order details captured. Connect a backend (see README) to enable live Stripe payment.')
+      // Fallback while the Stripe backend isn't wired up yet, so the flow is
+      // still demoable and the order above is still saved for the Sales page.
+      alert('Order placed! (Connect a backend — see README — to take real payment via Stripe.)')
       clearCart()
       navigate('/')
     } finally {

@@ -11,6 +11,7 @@ create table if not exists products (
   colors text[] not null default '{}',
   sizes text[] not null default '{}',
   image_url text not null default '',
+  gallery_urls text[] not null default '{}',
   is_new boolean not null default false,
   created_at timestamptz not null default now()
 );
@@ -61,3 +62,43 @@ create policy "Authenticated can delete product images"
   on storage.objects for delete
   to authenticated
   using (bucket_id = 'product-images');
+
+-- 3. Orders table — one row per checkout, used for the admin Sales page
+create table if not exists orders (
+  id uuid primary key default gen_random_uuid(),
+  customer_first_name text not null,
+  customer_last_name text not null,
+  email text not null,
+  phone text not null,
+  address text not null,
+  city text not null,
+  state text not null,
+  country text not null,
+  items jsonb not null,
+  subtotal numeric(10,2) not null,
+  shipping numeric(10,2) not null,
+  total numeric(10,2) not null,
+  status text not null default 'pending' check (status in ('pending', 'paid', 'fulfilled', 'cancelled')),
+  stripe_session_id text,
+  created_at timestamptz not null default now()
+);
+
+alter table orders enable row level security;
+
+-- Shoppers (logged out, using the anon key) can create an order at checkout,
+-- but cannot read orders back -- that keeps other customers' orders private.
+create policy "Anyone can create an order"
+  on orders for insert
+  to anon, authenticated
+  with check (true);
+
+-- Only your admin account can view or update orders (the Sales page).
+create policy "Authenticated can read orders"
+  on orders for select
+  to authenticated
+  using (true);
+
+create policy "Authenticated can update orders"
+  on orders for update
+  to authenticated
+  using (true);

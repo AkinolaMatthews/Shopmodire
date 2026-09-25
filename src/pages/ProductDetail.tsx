@@ -14,11 +14,13 @@ export default function ProductDetail() {
   const [size, setSize] = useState('')
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
+  const [activeImage, setActiveImage] = useState('')
 
   useEffect(() => {
     if (product) {
       setColor(product.colors[0] ?? '')
       setSize(product.sizes[0] ?? '')
+      setActiveImage(product.image_url)
     }
   }, [product])
 
@@ -39,8 +41,24 @@ export default function ProductDetail() {
         </div>
 
         <div className="pd-grid">
-          <div className="pd-image">
-            <img src={product.image_url} alt={product.name} />
+          <div className="pd-image-col">
+            <div className="pd-image">
+              <img src={activeImage || product.image_url} alt={product.name} />
+            </div>
+            {[product.image_url, ...product.gallery_urls].filter(Boolean).length > 1 && (
+              <div className="pd-thumbs">
+                {[product.image_url, ...product.gallery_urls].filter(Boolean).map((url, i) => (
+                  <button
+                    key={url + i}
+                    type="button"
+                    className={`pd-thumb${activeImage === url ? ' pd-thumb--active' : ''}`}
+                    onClick={() => setActiveImage(url)}
+                  >
+                    <img src={url} alt={`${product.name} view ${i + 1}`} />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="pd-info">

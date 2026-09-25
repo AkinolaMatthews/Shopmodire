@@ -8,12 +8,12 @@ import ProductDetail from './pages/ProductDetail'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import About from './pages/About'
-import FAQ from './pages/FAQ'
 import Contact from './pages/Contact'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminProductNew from './pages/admin/AdminProductNew'
 import AdminProductEdit from './pages/admin/AdminProductEdit'
+import AdminOrders from './pages/admin/AdminOrders'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function ScrollToTop() {
@@ -45,13 +45,13 @@ export default function App() {
         <Route path="/checkout" element={<StorefrontLayout><Checkout /></StorefrontLayout>} />
         <Route path="/about" element={<StorefrontLayout><About /></StorefrontLayout>} />
         <Route path="/contact" element={<StorefrontLayout><Contact /></StorefrontLayout>} />
-        <Route path="/faq" element={<StorefrontLayout><FAQ /></StorefrontLayout>} />
 
         {/* Admin (no storefront header/footer) */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
         <Route path="/admin/products/new" element={<ProtectedRoute><AdminProductNew /></ProtectedRoute>} />
         <Route path="/admin/products/:id/edit" element={<ProtectedRoute><AdminProductEdit /></ProtectedRoute>} />
+        <Route path="/admin/orders" element={<ProtectedRoute><AdminOrders /></ProtectedRoute>} />
       </Routes>
     </>
   )

@@ -1,14 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Plus, Pencil, Trash2, LogOut } from 'lucide-react'
+import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { useProducts } from '../../hooks/useProducts'
-import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
+import AdminNav from '../../components/admin/AdminNav'
 import '../../styles/admin.css'
 
 export default function AdminDashboard() {
   const { products, loading, error, refresh } = useProducts()
-  const { signOut } = useAuth()
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const handleDelete = async (id: string, name: string) => {
@@ -25,6 +24,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="admin-page">
+      <AdminNav />
       <div className="admin-page__header">
         <div>
           <span className="eyebrow">Admin</span>
@@ -34,9 +34,6 @@ export default function AdminDashboard() {
           <Link to="/admin/products/new" className="btn btn-primary">
             <Plus size={18} /> Add Product
           </Link>
-          <button className="btn btn-ghost" onClick={signOut}>
-            <LogOut size={16} /> Sign Out
-          </button>
         </div>
       </div>
 

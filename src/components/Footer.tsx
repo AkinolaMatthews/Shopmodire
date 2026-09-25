@@ -22,7 +22,7 @@ export default function Footer() {
           <h4>Company</h4>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
-          <Link to="/faq">FAQ</Link>
+          <Link to="/contact">FAQ</Link>
         </div>
 
         <div className="footer-col">

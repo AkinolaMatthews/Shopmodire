@@ -12,6 +12,11 @@ and a Supabase-backed product catalog with an admin panel for managing products.
    its security policies, and a public `product-images` storage bucket.
 3. Optional: also run `supabase/seed.sql` to pre-fill the 7 starter products
    (with blank photos you can fill in from the admin panel).
+   **Already ran schema.sql before?** If your Supabase project was set up
+   before the photo gallery and Sales page existed, also run
+   `supabase/migration-2-gallery-and-orders.sql` once — it adds the
+   `gallery_urls` column and the `orders` table without touching your
+   existing products.
 4. Go to **Authentication → Users → Add user** and create your own admin
    login (email + password). This is the only account that will exist —
    there's no public sign-up form in the app.
@@ -46,15 +51,25 @@ with the account you created in step 4.
 ## Using the admin panel
 
 - **Add Product** — fill in name, category, price, description, colors/sizes
-  (comma separated), upload a photo, optionally mark it "New". The photo
-  uploads straight to Supabase Storage and the product appears on the
+  (comma separated), a cover photo (shown on product cards and in the cart),
+  and optional gallery photos — add as many as you like, they show as a
+  thumbnail strip on the product page. Mark it "New" to show the badge.
+  Photos upload straight to Supabase Storage and the product appears on the
   storefront immediately.
-- **Edit** (pencil icon) — change any field or replace the photo.
+- **Edit** (pencil icon) — change any field, replace the cover photo, or
+  add/remove gallery photos.
 - **Delete** (trash icon) — asks for confirmation, then removes the product
   and it disappears from the storefront right away.
+- **Sales** (top nav) — every completed checkout is recorded here
+  automatically, with the customer's info, items, and total. Revenue and
+  order-count totals sit at the top. Each order starts as "pending" — update
+  the status dropdown to "paid", "fulfilled", or "cancelled" as you process
+  it. This is manual for now, since order status isn't yet auto-confirmed
+  by Stripe; once you wire up a Stripe webhook (see below) you can have it
+  flip an order to "paid" automatically.
 
-Products are stored in Supabase, not in the codebase — you don't need to edit
-code or redeploy to add or change a product.
+Products and orders are stored in Supabase, not in the codebase — you don't
+need to edit code or redeploy to add a product or check on sales.
 
 ## Wiring up Stripe (checkout)
 
@@ -110,14 +125,15 @@ lives alongside your Vercel-hosted frontend — no separate server needed.
 ```
 src/
   components/       Header, Footer, ProductCard, decorative background + hero cart
-  components/admin/ ProductForm (shared by Add and Edit)
+  components/admin/ ProductForm (shared by Add and Edit), AdminNav
   context/          CartContext (localStorage) and AuthContext (Supabase session)
-  hooks/            useProducts / useProduct — reads from Supabase
+  hooks/            useProducts / useProduct and useOrders — read from Supabase
   lib/              supabase.ts — the Supabase client
   pages/            Home, Shop, ProductDetail, Cart, Checkout, About, Contact
-  pages/admin/      AdminLogin, AdminDashboard, AdminProductNew, AdminProductEdit
-  types/            Product type shared across the app
+  pages/admin/      AdminLogin, AdminDashboard, AdminProductNew, AdminProductEdit, AdminOrders (Sales)
+  types/            Product and Order types shared across the app
 supabase/
-  schema.sql        Table, RLS policies, storage bucket — run this first
-  seed.sql          Optional starter catalog
+  schema.sql                        Full schema for a fresh Supabase project — run this first
+  migration-2-gallery-and-orders.sql  Run instead if you already had schema.sql set up before
+  seed.sql                          Optional starter catalog
 ```

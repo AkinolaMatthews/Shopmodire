@@ -1,6 +1,7 @@
 import { useParams, Navigate } from 'react-router-dom'
 import { useProduct } from '../../hooks/useProducts'
 import ProductForm from '../../components/admin/ProductForm'
+import AdminNav from '../../components/admin/AdminNav'
 import '../../styles/admin.css'
 
 export default function AdminProductEdit() {
@@ -12,6 +13,7 @@ export default function AdminProductEdit() {
 
   return (
     <div className="admin-page">
+      <AdminNav />
       <div className="admin-page__header">
         <div>
           <span className="eyebrow">Admin</span>

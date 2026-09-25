@@ -7,6 +7,7 @@ export interface Product {
   colors: string[]
   sizes: string[]
   image_url: string
+  gallery_urls: string[]
   is_new: boolean
   created_at?: string
 }
