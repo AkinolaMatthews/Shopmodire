@@ -32,7 +32,7 @@ export default function Contact() {
           </div>
           <div className="contact__detail">
             <ExternalLink size={18} />
-            <a href="https://www.etsy.com" target="_blank" rel="noreferrer">ShopModire on Etsy</a>
+            <a href="https://www.etsy.com/shop/ShopModire" target="_blank" rel="noreferrer">ShopModire on Etsy</a>
           </div>
         </div>
 
