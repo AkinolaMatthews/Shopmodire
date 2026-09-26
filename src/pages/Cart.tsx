@@ -9,8 +9,7 @@ export default function Cart() {
   if (items.length === 0) {
     return (
       <section className="section cart-empty">
-        <div className="container cart-empty__inner">
-          <ShoppingBag size={40} strokeWidth={1.25} />
+        <div className="cart-empty__inner">
           <h1>Your cart is empty</h1>
           <p>Looks like you haven't added anything yet.</p>
           <Link to="/shop" className="btn btn-primary">Continue Shopping</Link>

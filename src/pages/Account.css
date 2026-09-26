@@ -1,0 +1,100 @@
+.account-page { display: flex; justify-content: center; }
+.account-page__inner, .account-page__signed-in {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.account-page h1 { font-size: clamp(1.7rem, 3vw, 2.2rem); margin: 8px 0 10px; }
+.account-page__sub { margin-bottom: 28px; }
+.account-page__signed-in p { margin-bottom: 24px; }
+
+.account-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  text-align: left;
+  box-shadow: var(--shadow-card);
+}
+
+.oauth-btn {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border);
+  background: var(--off-white);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--charcoal);
+  margin-bottom: 10px;
+}
+.oauth-btn:hover { border-color: var(--charcoal); }
+
+.account-card__divider {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin: 18px 0;
+}
+
+.account-tabs {
+  display: flex;
+  background: var(--off-white);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  margin-bottom: 20px;
+}
+.account-tabs__btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: none;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--gray);
+}
+.account-tabs__btn--active { background: var(--white); color: var(--charcoal); box-shadow: var(--shadow-card); }
+
+.account-field {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--charcoal);
+  margin-bottom: 14px;
+}
+.account-field input {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 13px 15px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+}
+.account-field input:focus { outline: none; border-color: var(--burgundy); }
+
+.account-submit { width: 100%; justify-content: center; margin-top: 4px; }
+
+.account-card__notice {
+  background: #FBF3E3;
+  color: var(--burgundy-dark);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  margin-bottom: 14px;
+}
+
+.account-page__links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.account-page__help { margin-top: 22px; font-size: 0.88rem; }
+.account-page__help a { color: var(--burgundy); font-weight: 600; }

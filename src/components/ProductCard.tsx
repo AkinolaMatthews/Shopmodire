@@ -1,13 +1,16 @@
 import { useState, MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowUpRight, ChevronLeft, ChevronRight, Heart } from 'lucide-react'
 import { Product } from '../types/product'
+import { useWishlist } from '../context/WishlistContext'
 import './ProductCard.css'
 
 export default function ProductCard({ product }: { product: Product }) {
   const images = [product.image_url, ...product.gallery_urls].filter(Boolean)
   const [index, setIndex] = useState(0)
   const hasMultiple = images.length > 1
+  const { has, toggle } = useWishlist()
+  const liked = has(product.id)
 
   const goPrev = (e: MouseEvent) => {
     e.preventDefault()
@@ -21,11 +24,26 @@ export default function ProductCard({ product }: { product: Product }) {
     setIndex(i => (i + 1) % images.length)
   }
 
+  const handleLike = (e: MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    toggle(product.id)
+  }
+
   return (
     <Link to={`/product/${product.id}`} className="product-card">
       <div className="product-card__image-wrap">
         <img src={images[index]} alt={product.name} loading="lazy" />
         {product.is_new && <span className="product-card__badge">New</span>}
+
+        <button
+          type="button"
+          className={`product-card__like${liked ? ' product-card__like--active' : ''}`}
+          onClick={handleLike}
+          aria-label={liked ? 'Remove from wishlist' : 'Add to wishlist'}
+        >
+          <Heart size={16} fill={liked ? 'currentColor' : 'none'} />
+        </button>
 
         {hasMultiple && (
           <>

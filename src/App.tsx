@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import MobileTabBar from './components/MobileTabBar'
 import Home from './pages/Home'
 import Shop from './pages/Shop'
 import ProductDetail from './pages/ProductDetail'
@@ -10,6 +11,8 @@ import Checkout from './pages/Checkout'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import FAQ from './pages/FAQ'
+import Account from './pages/Account'
+import Wishlist from './pages/Wishlist'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminProductNew from './pages/admin/AdminProductNew'
@@ -29,6 +32,7 @@ function StorefrontLayout({ children }: { children: React.ReactNode }) {
       <Header />
       <main>{children}</main>
       <Footer />
+      <MobileTabBar />
     </>
   )
 }
@@ -47,6 +51,8 @@ export default function App() {
         <Route path="/about" element={<StorefrontLayout><About /></StorefrontLayout>} />
         <Route path="/contact" element={<StorefrontLayout><Contact /></StorefrontLayout>} />
         <Route path="/faq" element={<StorefrontLayout><FAQ /></StorefrontLayout>} />
+        <Route path="/account" element={<StorefrontLayout><Account /></StorefrontLayout>} />
+        <Route path="/wishlist" element={<StorefrontLayout><Wishlist /></StorefrontLayout>} />
 
         {/* Admin (no storefront header/footer) */}
         <Route path="/admin/login" element={<AdminLogin />} />

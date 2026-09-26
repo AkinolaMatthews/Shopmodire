@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { ShoppingBag, Menu, X } from 'lucide-react'
+import { ShoppingBag, Menu, X, User } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import './Header.css'
 
@@ -36,6 +36,9 @@ export default function Header() {
         </nav>
 
         <div className="site-header__actions">
+          <Link to="/account" className="cart-button account-button" aria-label="My account">
+            <User size={20} strokeWidth={1.75} />
+          </Link>
           <Link to="/cart" className="cart-button" aria-label="View cart">
             <ShoppingBag size={20} strokeWidth={1.75} />
             {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}

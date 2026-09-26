@@ -13,37 +13,29 @@ export default function Home() {
 
   return (
     <>
-      {/* HERO */}
-      <section className="hero">
-        <BackgroundBlobs variant="hero" />
-        <div className="container hero__inner">
-          <div className="hero__copy reveal">
-            <span className="eyebrow">African-inspired professional workwear</span>
-            <h1 className="hero__headline">Wear Your Culture With Confidence</h1>
-            <p className="hero__sub">
-              Shop Modire designs medical scrubs, scrub caps and joggers that carry African
-              heritage prints into the workplace — soft, stretch fabric built for a full shift,
-              styled like it belongs on a runway.
-            </p>
-            <div className="hero__actions">
-              <Link to="/shop" className="btn btn-primary">Shop the Collection</Link>
-              <Link to="/about" className="btn btn-secondary">Our Story</Link>
-            </div>
-          </div>
-
-          <div className="hero__visual">
-            <div className="hero__video-frame">
-              <video
-                className="hero__video"
-                src="/videos/hero-loop.mp4"
-                poster="/images/hero-model.jpg"
-                autoPlay
-                muted
-                loop
-                playsInline
-              />
-            </div>
-            <FloatingCartIcon />
+           {/* HERO */}
+      <section className="hero hero--video">
+        <video
+          className="hero__bg-video"
+          src="/videos/hero-loop.mp4"
+          poster="/images/hero-model.jpg"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+        <div className="hero__scrim" />
+        <div className="container hero__content reveal">
+          <span className="eyebrow eyebrow--light">African-inspired professional workwear</span>
+          <h1 className="hero__headline hero__headline--video">Wear Your Culture With Confidence</h1>
+          <p className="hero__sub hero__sub--video">
+            Shop Modire designs medical scrubs, scrub caps and joggers that carry African
+            heritage prints into the workplace — soft, stretch fabric built for a full shift,
+            styled like it belongs on a runway.
+          </p>
+          <div className="hero__actions">
+            <Link to="/shop" className="btn btn-primary">Shop the Collection</Link>
+            <Link to="/about" className="btn btn-secondary btn-secondary--light">Our Story</Link>
           </div>
         </div>
       </section>
