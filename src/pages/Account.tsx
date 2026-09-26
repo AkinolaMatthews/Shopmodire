@@ -1,11 +1,99 @@
-import { useState, FormEvent } from 'react'
-import { Link, Navigate } from 'react-router-dom'
-import { Heart, LogOut } from 'lucide-react'
+import { useState, FormEvent, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Heart, LogOut, Check } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import './Account.css'
 
+function AccountDashboard() {
+  const { session, signOut, updateProfile } = useAuth()
+  const meta = session?.user.user_metadata ?? {}
+
+  const [fullName, setFullName] = useState(meta.full_name ?? '')
+  const [phone, setPhone] = useState(meta.phone ?? '')
+  const [address, setAddress] = useState(meta.address ?? '')
+  const [city, setCity] = useState(meta.city ?? '')
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    setFullName(meta.full_name ?? '')
+    setPhone(meta.phone ?? '')
+    setAddress(meta.address ?? '')
+    setCity(meta.city ?? '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.user.id])
+
+  const handleSave = async (e: FormEvent) => {
+    e.preventDefault()
+    setSaving(true)
+    setError(null)
+    setSaved(false)
+    const { error } = await updateProfile({
+      full_name: fullName,
+      phone,
+      address,
+      city,
+    })
+    setSaving(false)
+    if (error) {
+      setError(error)
+    } else {
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2500)
+    }
+  }
+
+  return (
+    <section className="section account-page">
+      <div className="container account-page__signed-in">
+        <span className="eyebrow">My Account</span>
+        <h1>Welcome back</h1>
+        <p>{session?.user.email}</p>
+
+        <div className="account-card account-card--dashboard">
+          <h3 className="account-card__title">My Details</h3>
+          <form onSubmit={handleSave}>
+            {error && <div className="admin-auth__error">{error}</div>}
+
+            <label className="account-field">
+              Full name
+              <input value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Your name" />
+            </label>
+            <label className="account-field">
+              Phone
+              <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone number" />
+            </label>
+            <label className="account-field">
+              Address
+              <input value={address} onChange={e => setAddress(e.target.value)} placeholder="Street address" />
+            </label>
+            <label className="account-field">
+              City
+              <input value={city} onChange={e => setCity(e.target.value)} placeholder="City" />
+            </label>
+
+            <button className="btn btn-primary account-submit" type="submit" disabled={saving}>
+              {saving ? 'Saving…' : saved ? <><Check size={16} /> Saved</> : 'Save Changes'}
+            </button>
+          </form>
+        </div>
+
+        <div className="account-page__links">
+          <Link to="/wishlist" className="btn btn-secondary">
+            <Heart size={16} /> My Wishlist
+          </Link>
+          <button className="btn btn-ghost" onClick={signOut}>
+            <LogOut size={16} /> Sign Out
+          </button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function Account() {
-  const { session, signIn, signUp, signInWithGoogle, signInWithApple, signOut } = useAuth()
+  const { session, signIn, signUp, signInWithGoogle, signInWithApple } = useAuth()
   const [mode, setMode] = useState<'signin' | 'signup'>('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -14,23 +102,7 @@ export default function Account() {
   const [submitting, setSubmitting] = useState(false)
 
   if (session) {
-    return (
-      <section className="section account-page">
-        <div className="container account-page__signed-in">
-          <span className="eyebrow">My Account</span>
-          <h1>Welcome back</h1>
-          <p>{session.user.email}</p>
-          <div className="account-page__links">
-            <Link to="/wishlist" className="btn btn-secondary">
-              <Heart size={16} /> My Wishlist
-            </Link>
-            <button className="btn btn-ghost" onClick={signOut}>
-              <LogOut size={16} /> Sign Out
-            </button>
-          </div>
-        </div>
-      </section>
-    )
+    return <AccountDashboard />
   }
 
   const handleSubmit = async (e: FormEvent) => {
@@ -38,13 +110,19 @@ export default function Account() {
     setSubmitting(true)
     setError(null)
     setNotice(null)
-    const { error } = mode === 'signin'
-      ? await signIn(email, password)
-      : await signUp(email, password)
+
+    if (mode === 'signin') {
+      const { error } = await signIn(email, password)
+      setSubmitting(false)
+      if (error) setError(error)
+      return
+    }
+
+    const { error, needsConfirmation } = await signUp(email, password)
     setSubmitting(false)
     if (error) {
       setError(error)
-    } else if (mode === 'signup') {
+    } else if (needsConfirmation) {
       setNotice('Account created — check your email to confirm, then sign in.')
       setMode('signin')
     }

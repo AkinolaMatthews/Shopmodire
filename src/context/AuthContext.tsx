@@ -6,10 +6,11 @@ interface AuthContextValue {
   session: Session | null
   loading: boolean
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
-  signUp: (email: string, password: string) => Promise<{ error: string | null }>
+  signUp: (email: string, password: string) => Promise<{ error: string | null; needsConfirmation: boolean }>
   signInWithGoogle: () => Promise<void>
   signInWithApple: () => Promise<void>
   signOut: () => Promise<void>
+  updateProfile: (data: Record<string, string>) => Promise<{ error: string | null }>
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
@@ -35,14 +36,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signUp = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({ email, password })
-    return { error: error ? error.message : null }
+    const { data, error } = await supabase.auth.signUp({ email, password })
+    return { error: error ? error.message : null, needsConfirmation: !error && !data.session }
   }
 
-  // Requires the Google/Apple providers to be turned on in Supabase ->
-  // Authentication -> Providers, each with their own OAuth client
-  // credentials from Google Cloud Console / Apple Developer. Until that's
-  // configured, these will redirect to an error page instead of Google/Apple.
   const signInWithGoogle = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -61,9 +58,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut()
   }
 
+  const updateProfile = async (data: Record<string, string>) => {
+    const { error } = await supabase.auth.updateUser({ data })
+    return { error: error ? error.message : null }
+  }
+
   return (
     <AuthContext.Provider
-      value={{ session, loading, signIn, signUp, signInWithGoogle, signInWithApple, signOut }}
+      value={{ session, loading, signIn, signUp, signInWithGoogle, signInWithApple, signOut, updateProfile }}
     >
       {children}
     </AuthContext.Provider>
