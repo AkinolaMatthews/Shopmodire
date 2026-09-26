@@ -58,7 +58,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut()
   }
 
-  const updateProfile = async (data: Record<string, string>) => {
+      const updateProfile = async (data: Record<string, string>) => {
+    if (!session) {
+      return { error: 'Your session expired — please sign out and sign in again.' }
+    }
+    const { error: setErr } = await supabase.auth.setSession({
+      access_token: session.access_token,
+      refresh_token: session.refresh_token,
+    })
+    if (setErr) {
+      return { error: 'Your session expired — please sign out and sign in again.' }
+    }
     const { error } = await supabase.auth.updateUser({ data })
     return { error: error ? error.message : null }
   }
